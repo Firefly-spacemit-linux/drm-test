@@ -1,11 +1,4 @@
 /*
- * modeset - DRM Double-Buffered Modesetting Example
- *
- * Written 2012 by David Rheinsberg <david.rheinsberg@gmail.com>
- * Dedicated to the Public Domain.
- */
-
-/*
  * DRM Double-Buffered Modesetting Howto
  * This example extends the modeset.c howto and introduces double-buffering.
  * When drawing a new frame into a framebuffer, we should always draw into an

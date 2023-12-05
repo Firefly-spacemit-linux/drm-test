@@ -1,11 +1,4 @@
 /*
- * modeset - DRM Double-Buffered VSync'ed Modesetting Example
- *
- * Written 2012 by David Rheinsberg <david.rheinsberg@gmail.com>
- * Dedicated to the Public Domain.
- */
-
-/*
  * DRM Double-Buffered VSync'ed Modesetting Howto
  * This example extends modeset-double-buffered.c and introduces page-flips
  * synced with vertical-blanks (vsync'ed). A vertical-blank is the time-period

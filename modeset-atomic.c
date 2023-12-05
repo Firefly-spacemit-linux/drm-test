@@ -1,11 +1,4 @@
 /*
- * modeset-atomic - DRM Atomic-API Modesetting Example
- * Written 2019 by Ezequiel Garcia <ezequiel@collabora.com>
- *
- * Dedicated to the Public Domain.
- */
-
-/*
  * DRM Double-Buffered VSync'ed Atomic Modesetting Howto
  * This example extends modeset-vsync.c, introducing planes and the
  * atomic API.
