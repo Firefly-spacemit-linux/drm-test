@@ -1170,7 +1170,7 @@ out_return:
 		errno = -ret;
 		fprintf(stderr, "modeset failed with error %d: %m\n", errno);
 	} else {
-		fprintf(stderr, "exiting\n");
+		fprintf(stderr, "drm modeset-atomic test case successful!\n");
 	}
 	return ret;
 }
