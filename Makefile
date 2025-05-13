@@ -6,6 +6,7 @@ all:
 	$(CC) -o modeset-double-buffer modeset-double-buffer.c $(FLAGS)
 	$(CC) -o modeset-vsync modeset-vsync.c $(FLAGS)
 	$(CC) -o modeset-atomic modeset-atomic.c $(FLAGS)
+	$(CC) -o modeset-dmabuf modeset-dmabuf.c $(FLAGS)
 
 clean:
-	rm -rf modeset-single-buffer modeset-double-buffer modeset-vsync modeset-atomic
+	rm -rf modeset-single-buffer modeset-double-buffer modeset-vsync modeset-atomic modeset-dmabuf
