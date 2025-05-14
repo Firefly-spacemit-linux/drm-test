@@ -56,6 +56,8 @@
 #include <drm_fourcc.h>
 
 
+#define VIDEO_WIDTH 1920
+#define VIDEO_HEIGHT 1080
 char *p1920x1080NV12Data         = "/usr/share/drm-test/1920_1080_nv12.yuv";
 
 struct dma_buffer {
@@ -545,10 +547,10 @@ static int allocate_dmabuf(size_t size, int *fd, void **map)
 }
 
 // 创建DRM帧缓冲区
-static int create_drm_fb(int drm_fd, struct dma_buffer *buf)
+static int create_drm_fb(int fd, struct dma_buffer *buf)
 {
     // 导入DMABUF
-    if (drmPrimeFDToHandle(drm_fd, buf->dmabuf_fd, &buf->handle)) {
+    if (drmPrimeFDToHandle(fd, buf->dmabuf_fd, &buf->handle)) {
         perror("Failed to import dmabuf");
         return -1;
     }
@@ -557,7 +559,7 @@ static int create_drm_fb(int drm_fd, struct dma_buffer *buf)
 	uint32_t handles[4] = {buf->handle, buf->handle};
     uint32_t strides[4] = {buf->stride, buf->stride};
     uint32_t offsets[4] = {0, (buf->width * buf->height)};
-    if (drmModeAddFB2(drm_fd, buf->width, buf->height, DRM_FORMAT_NV12,
+    if (drmModeAddFB2(fd, buf->width, buf->height, DRM_FORMAT_NV12,
                      handles, strides, offsets, &buf->fb, 0)) {
         perror("Failed to create FB");
         return -1;
@@ -575,37 +577,37 @@ static int modeset_create_fb(int fd, struct modeset_buf *buf)
 	struct drm_mode_destroy_dumb dreq;
 	struct drm_mode_map_dumb mreq;
 	int ret;
+	int width = VIDEO_WIDTH;
+	int height = VIDEO_HEIGHT;
+	int size = ((VIDEO_WIDTH)*(VIDEO_HEIGHT)*3)/2;
 
 	// 分配DMABUF
-    struct dma_buffer drm_buf = {
-		.width = buf->width,
-		.height = buf->height,
-        .stride = buf->width,
-        .size = (buf->width * buf->height * 3) / 2
-    };
+	struct dma_buffer dma_buf = {
+		.width = width,
+		.height = height,
+		.stride = width,
+		.size = size,
+	};
 
-    if (allocate_dmabuf(drm_buf.size, &drm_buf.dmabuf_fd, &drm_buf.map) < 0) {
-        return -1;
-    }
+	if (allocate_dmabuf(dma_buf.size, &dma_buf.dmabuf_fd, &dma_buf.map) < 0) {
+		return -1;
+	}
 
 	// 填充YUV数据
-	if ((buf->width == 1920) && (buf->height))
-		readFile(p1920x1080NV12Data, drm_buf.map);
-	else
-		memset(drm_buf.map, 0xaa, drm_buf.size);
+	readFile(p1920x1080NV12Data, dma_buf.map);
 
 	// 创建DRM FB
-    if (create_drm_fb(fd, &drm_buf) < 0) {
-        munmap(drm_buf.map, drm_buf.size);
-        close(drm_buf.dmabuf_fd);
-        return -1;
-    }
+	if (create_drm_fb(fd, &dma_buf) < 0) {
+		munmap(dma_buf.map, dma_buf.size);
+		close(dma_buf.dmabuf_fd);
+		return -1;
+	}
 
-	buf->stride = drm_buf.stride;
-	buf->size = drm_buf.size;
-	buf->handle = drm_buf.handle;
-	buf->fb = drm_buf.fb;
-	buf->map = drm_buf.map;
+	buf->stride = dma_buf.stride;
+	buf->size = dma_buf.size;
+	buf->handle = dma_buf.handle;
+	buf->fb = dma_buf.fb;
+	buf->map = dma_buf.map;
 
 	return 0;
 }
@@ -853,9 +855,9 @@ static int modeset_atomic_prepare_commit(int fd, struct modeset_output *out,
 		return -1;
 	if (set_drm_object_property(req, plane, "SRC_Y", 0) < 0)
 		return -1;
-	if (set_drm_object_property(req, plane, "SRC_W", buf->width << 16) < 0)
+	if (set_drm_object_property(req, plane, "SRC_W", VIDEO_WIDTH << 16) < 0)
 		return -1;
-	if (set_drm_object_property(req, plane, "SRC_H", buf->height << 16) < 0)
+	if (set_drm_object_property(req, plane, "SRC_H", VIDEO_HEIGHT << 16) < 0)
 		return -1;
 	if (set_drm_object_property(req, plane, "CRTC_X", 0) < 0)
 		return -1;
