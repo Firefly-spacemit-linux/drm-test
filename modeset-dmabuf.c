@@ -47,6 +47,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <sys/mman.h>
+#include <sys/ioctl.h>
 #include <linux/dma-buf.h>
 #include <linux/dma-heap.h>
 #include <time.h>
@@ -58,7 +59,7 @@
 
 #define VIDEO_WIDTH 1920
 #define VIDEO_HEIGHT 1080
-char *p1920x1080NV12Data         = "/usr/share/drm-test/1920_1080_nv12.yuv";
+char *p1920x1080NV12Data         = "/usr/share/drm/1920_1080_nv12.yuv";
 
 struct dma_buffer {
     int dmabuf_fd;

@@ -1,0 +1,17 @@
+###
+ # Copyright 2022-2023 SPACEMIT. All rights reserved.
+ # Use of this source code is governed by a BSD-style license
+ # that can be found in the LICENSE file.
+###
+
+[Unit]
+Description=drm service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/init.d/drm.sh
+ExecStart=/etc/init.d/drm.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
