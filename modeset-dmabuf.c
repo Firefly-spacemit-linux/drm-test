@@ -55,11 +55,13 @@
 #include <xf86drm.h>
 #include <xf86drmMode.h>
 #include <drm_fourcc.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 
 #define VIDEO_WIDTH 1920
 #define VIDEO_HEIGHT 1080
-char *p1920x1080NV12Data         = "/usr/share/drm/1920_1080_nv12.yuv";
+char *p1920x1080NV12Data         = "/usr/share/drm/1920_1080_NV12.yuv";
 
 struct dma_buffer {
     int dmabuf_fd;
