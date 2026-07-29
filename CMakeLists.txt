@@ -31,6 +31,9 @@ target_link_libraries(modeset-rdma ${DRM_LIBRARIES})
 add_executable(modeset-test modeset-test.c)
 target_link_libraries(modeset-test ${DRM_LIBRARIES})
 
+add_executable(modeset-wb modeset-wb.c)
+target_link_libraries(modeset-wb ${DRM_LIBRARIES})
+
 add_executable(modeset-dmabuf modeset-dmabuf.c)
 target_include_directories(modeset-dmabuf PRIVATE 
     ${DRM_INCLUDE_DIRS}
@@ -39,7 +42,7 @@ target_include_directories(modeset-dmabuf PRIVATE
 target_link_libraries(modeset-dmabuf ${DRM_LIBRARIES})
 
 install(TARGETS modeset-single-buffer modeset-double-buffer RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-install(TARGETS modeset-atomic modeset-vsync modeset-rdma modeset-test RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+install(TARGETS modeset-atomic modeset-vsync modeset-rdma modeset-test modeset-wb RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 install(TARGETS modeset-dmabuf RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 install(DIRECTORY res/
         DESTINATION share/drm
